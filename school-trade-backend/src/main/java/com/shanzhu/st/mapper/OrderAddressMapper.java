@@ -6,8 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 订单地址 数据持久层
  *
- * @author: ShanZhu
- * @date: 2024-01-05
  */
 @Mapper
 public interface OrderAddressMapper {

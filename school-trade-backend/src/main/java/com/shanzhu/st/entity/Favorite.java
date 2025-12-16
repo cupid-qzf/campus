@@ -8,8 +8,7 @@ import java.util.Date;
 /**
  * 收藏 实体对象
  *
- * @author: ShanZhu
- * @date: 2024-01-05
+
  */
 @Data
 public class Favorite implements Serializable {

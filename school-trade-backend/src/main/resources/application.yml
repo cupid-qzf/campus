@@ -1,7 +1,4 @@
-# YML是一种文件格式，全称为YAML（YAML Ain't Markup Language），SpringBoot通常使用YML作为项目配置。
-# 它是一种人类可读的、简洁明了的数据序列化格式。YAML文件格式通常用于配置文件、数据交换、消息传递和其他应用程序。
-# 可以通过文本编辑器进行编辑，也可以通过程序进行解析。YML文件格式是一种以层级缩进的方式表示程序数据结构的格式。
-# 在数据表示方面比XML等格式更加简洁清晰易读。YML文件格式通常以“.yml”为扩展名。
+
 
 #Spring相关配置
 spring:
@@ -24,8 +21,8 @@ spring:
 
 #文件路径
 baseUrl: http://localhost:8080
-#C:/exam/xxx/pic  注意这个文件夹路径最好不要有中文，容易出问题！！
-userFilePath: C:\Users\Administrator\Desktop\校园二手交易平台\源码\pic
+#C:/exam/xxx/pic
+userFilePath: C:\Users\28389\Desktop\stb\pic
 
 #Mybatis配置
 mybatis:

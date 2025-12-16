@@ -7,12 +7,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-/**
- * SpringMvc web 配置
- *
- * @author: ShanZhu
- * @date: 2024-01-05
- */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 

@@ -8,8 +8,6 @@ import java.util.List;
 /**
  * 地址相关 数据持久层
  *
- * @author: ShanZhu
- * @date: 2024-01-05
  */
 @Mapper
 public interface AddressMapper {

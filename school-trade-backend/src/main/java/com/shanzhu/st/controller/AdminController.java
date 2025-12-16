@@ -16,12 +16,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-/**
- * 管理员相关 控制层
- *
- * @author: ShanZhu
- * @date: 2024-01-05
- */
 @CrossOrigin
 @RestController
 @RequestMapping("admin")

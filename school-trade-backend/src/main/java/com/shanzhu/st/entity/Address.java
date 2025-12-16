@@ -7,8 +7,6 @@ import java.io.Serializable;
 /**
  * 地址相关 实体对象
  *
- * @author: ShanZhu
- * @date: 2024-01-05
  */
 @Data
 public class Address implements Serializable {

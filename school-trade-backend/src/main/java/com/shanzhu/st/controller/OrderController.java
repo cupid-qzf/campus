@@ -14,10 +14,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * 订单 控制层
- *
- * @author: ShanZhu
- * @date: 2024-01-05
+ * 订单控制器
+ * 处理订单的创建、查询、更新等操作
  */
 @CrossOrigin
 @RestController
@@ -25,7 +23,7 @@ import java.util.Date;
 public class OrderController {
 
     @Resource
-    private OrderService orderService;
+    private OrderService orderService;  // 订单服务层
 
     /**
      * 添加订单
@@ -82,7 +80,7 @@ public class OrderController {
      *
      * @param shUserId 用户id
      * @param order    订单信息
-     * @return
+     * @return 更新结果
      */
     @PostMapping("/update")
     public R updateOrder(
@@ -91,6 +89,7 @@ public class OrderController {
             @NotEmpty(message = "登录异常 请重新登录") String shUserId,
             @RequestBody Order order
     ) {
+        // 如果支付状态为已支付，设置支付时间
         if (order.getPaymentStatus() != null && order.getPaymentStatus().equals((byte) 1)) {
             order.setPaymentTime(new Date());
         }

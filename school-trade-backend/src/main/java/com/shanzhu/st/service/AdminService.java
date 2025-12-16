@@ -6,8 +6,6 @@ import com.shanzhu.st.vo.PageVo;
 /**
  * 管理员相关 服务层
  *
- * @author: ShanZhu
- * @date: 2024-01-05
  */
 public interface AdminService {
 

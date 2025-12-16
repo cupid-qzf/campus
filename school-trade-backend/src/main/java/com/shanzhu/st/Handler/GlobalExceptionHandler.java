@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 /**
  * 全局异常处理器
  *
- * @author: ShanZhu
- * @date: 2024-01-05
  */
 @ControllerAdvice
 @ResponseBody

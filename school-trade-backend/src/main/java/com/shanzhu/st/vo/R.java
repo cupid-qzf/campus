@@ -5,9 +5,6 @@ import com.shanzhu.st.enums.ErrorMsg;
 
 /**
  * 前端接口返回包装模型
- *
- * @author: ShanZhu
- * @date: 2024-01-05
  */
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class R<T> {

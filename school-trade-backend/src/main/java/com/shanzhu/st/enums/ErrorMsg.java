@@ -2,10 +2,8 @@ package com.shanzhu.st.enums;
 
 
 /**
- * 错误信息美剧
+ * 错误信息
  *
- * @author: ShanZhu
- * @date: 2024-01-05
  */
 public enum ErrorMsg {
 

@@ -1,9 +1,14 @@
 <template>
     <div>
+        <!-- 头部组件 -->
         <app-head></app-head>
+        <!-- 主体内容 -->
         <app-body>
+            <!-- 闲置物品详情容器 -->
             <div class="idle-details-container">
+                <!-- 详情头部：用户信息和操作按钮 -->
                 <div class="details-header">
+                    <!-- 卖家信息 -->
                     <div class="details-header-user-info">
                         <el-image
                                 style="width: 80px; height: 80px;border-radius: 5px;"
@@ -88,25 +93,30 @@
     import AppBody from '../common/AppPageBody.vue'
     import AppFoot from '../common/AppFoot.vue'
 
+    /**
+     * 闲置物品详情组件
+     * 展示闲置物品的详细信息，支持购买、收藏、留言等功能
+     */
     export default {
         name: "idle-details",
+        // 注册组件
         components: {
-            AppHead,
-            AppBody,
-            AppFoot
+            AppHead,  // 头部组件
+            AppBody,  // 主体内容组件
+            AppFoot   // 底部组件
         },
         data() {
             return {
-                messageContent:'',
-                toUser:null,
-                toMessage:null,
-                isReply:false,
-                replyData:{
-                    toUserNickname:'',
-                    toMessage:''
+                messageContent:'',  // 留言内容
+                toUser:null,        // 回复对象用户ID
+                toMessage:null,     // 回复的消息ID
+                isReply:false,      // 是否处于回复状态
+                replyData:{         // 回复数据
+                    toUserNickname:'',  // 回复对象昵称
+                    toMessage:''        // 回复的消息内容
                 },
-                messageList:[],
-                idleItemInfo:{
+                messageList:[],      // 留言列表
+                idleItemInfo:{       // 闲置物品信息
                     id:'',
                     idleName:'',
                     idleDetails:'',
@@ -122,11 +132,15 @@
                         signInTime:''
                     },
                 },
-                isMaster:false,
-                isFavorite:true,
-                favoriteId:0
+                isMaster:false,       // 是否是物品主人
+                isFavorite:true,      // 是否已收藏
+                favoriteId:0          // 收藏ID
             };
         },
+        /**
+         * 组件创建时执行
+         * 获取闲置物品详情、检查是否收藏、获取留言列表
+         */
         created(){
             let id=this.$route.query.id;
             this.$api.getIdleItem({
@@ -158,6 +172,9 @@
             });
         },
         methods: {
+            /**
+             * 获取闲置物品的所有留言
+             */
             getAllIdleMessage(){
                 this.$api.getAllIdleMessage({
                     idleId:this.idleItemInfo.id
@@ -169,6 +186,9 @@
                 }).catch(()=>{
                 })
             },
+            /**
+             * 检查当前用户是否已收藏该物品
+             */
             checkFavorite(){
                 this.$api.checkFavorite({
                     idleId:this.idleItemInfo.id
@@ -180,6 +200,11 @@
                     }
                 })
             },
+            /**
+             * 获取Cookie值
+             * @param {string} cname Cookie名称
+             * @returns {string} Cookie值
+             */
             getCookie(cname){
                 var name = cname + "=";
                 var ca = document.cookie.split(';');
@@ -190,6 +215,10 @@
                 }
                 return "";
             },
+            /**
+             * 回复留言
+             * @param {number} index 留言索引
+             */
             replyMessage(index){
                 $('html,body').animate({
                     scrollTop: $("#replyMessageLocation").offset().top-600
@@ -200,6 +229,11 @@
                 this.toUser=this.messageList[index].userId;
                 this.toMessage=this.messageList[index].id;
             },
+            /**
+             * 更改闲置物品状态
+             * @param {Object} idle 闲置物品对象
+             * @param {number} status 新状态（1:上架, 2:下架）
+             */
             changeStatus(idle,status){
                 this.$api.updateIdleItem({
                     id:idle.id,
@@ -213,6 +247,10 @@
                     }
                 });
             },
+            /**
+             * 立即购买按钮点击事件
+             * @param {Object} idleItemInfo 闲置物品信息
+             */
             buyButton(idleItemInfo){
                 this.$api.addOrder({
                     idleId:idleItemInfo.id,
@@ -228,6 +266,10 @@
 
                 })
             },
+            /**
+             * 收藏/取消收藏按钮点击事件
+             * @param {Object} idleItemInfo 闲置物品信息
+             */
             favoriteButton(idleItemInfo){
                 if(this.isFavorite){
                     this.$api.deleteFavorite({
@@ -264,6 +306,9 @@
                     })
                 }
             },
+            /**
+             * 取消回复
+             */
             cancelReply(){
                 this.isReply=false;
                 this.toUser=this.idleItemInfo.userId;
@@ -271,6 +316,9 @@
                 this.replyData.toUserNickname='';
                 this.replyData.toMessage='';
             },
+            /**
+             * 发送留言
+             */
             sendMessage(){
                 let content=this.messageContent.trim();
                 if(this.toUser==null){

@@ -15,12 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * 文件控制层
- *
- * @author: ShanZhu
- * @date: 2024-01-05
- */
+
 @CrossOrigin
 @RestController
 public class FileController {

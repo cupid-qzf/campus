@@ -1,12 +1,17 @@
 <template>
     <div>
+        <!-- 头部组件 -->
         <app-head :nickname-value="userInfo.nickname"
                   :avatarValue="userInfo.avatar"></app-head>
+        
+        <!-- 主体内容 -->
         <app-body>
+            <!-- 用户信息和闲置物品管理区域 -->
             <div v-show="!eidtAddress">
+                <!-- 用户信息容器 -->
                 <div class="user-info-container">
                     <div class="user-info-details">
-
+                        <!-- 头像上传区域 -->
                         <el-upload
                                 action="http://localhost:8080/file/"
                                 :on-success="fileHandleSuccess"
@@ -207,47 +212,45 @@
     import AppFoot from '../common/AppFoot.vue'
     import options from '../common/country-data.js'
 
+    /**
+     * 个人中心组件
+     * 展示和管理用户个人信息、闲置物品和收货地址
+     */
     export default {
         name: "me",
+        // 注册组件
         components: {
-            AppHead,
-            AppBody,
-            AppFoot
+            AppHead,  // 头部组件
+            AppBody,  // 主体内容组件
+            AppFoot   // 底部组件
         },
         data() {
             return {
-                imgFileList: [],
+                imgFileList: [],  // 头像文件列表
+                // 收货地址信息
                 addressInfo: {
-                    consigneeName: '',
-                    consigneePhone: '',
-                    provinceName: '',
-                    cityName: '',
-                    regionName: '',
-                    detailAddress: '',
-                    defaultFlag: false
+                    consigneeName: '',  // 收货人姓名
+                    consigneePhone: '',  // 收货人手机号
+                    provinceName: '',  // 省
+                    cityName: '',  // 市
+                    regionName: '',  // 区
+                    detailAddress: '',  // 详细地址
+                    defaultFlag: false  // 是否默认地址
                 },
-                activeName: '1',
-                handleName: ['下架', '删除', '取消收藏', '', ''],
-                dataList: [
-                    [],
-                    [],
-                    [],
-                    [],
-                    [],
-                    [],
-                    [],
-                    [],
-                ],
-                orderStatus: ['待付款', '待发货', '待收货', '已完成', '已取消'],
-                userInfoDialogVisible: false,
-                notUserNicknameEdit: true,
-                userPasswordEdit: false,
-                userPassword1: '',
-                userPassword2: '',
-                userPassword3: '',
-                eidtAddress: false,
-                selectedOptions: [],//存放默认值
-                options: options,   //存放城市数据,
+                activeName: '1',  // 当前激活的标签页
+                handleName: ['下架', '删除', '取消收藏', '', ''],  // 操作按钮名称
+                // 数据列表：[我发布的, 我下架的, 我收藏的, 我卖出的, 我买到的]
+                dataList: [[], [], [], [], [], [], [], []],
+                orderStatus: ['待付款', '待发货', '待收货', '已完成', '已取消'],  // 订单状态
+                userInfoDialogVisible: false,  // 用户信息编辑对话框可见性
+                notUserNicknameEdit: true,  // 是否禁止编辑昵称
+                userPasswordEdit: false,  // 是否编辑密码
+                userPassword1: '',  // 原密码
+                userPassword2: '',  // 新密码
+                userPassword3: '',  // 确认新密码
+                eidtAddress: false,  // 是否编辑收货地址
+                selectedOptions: [],// 存放默认地址选择
+                options: options,   // 存放城市数据,
                 userInfo: {
                     accountNumber: "",
                     avatar: "",
@@ -297,6 +300,9 @@
                     }
                 })
             },
+            /**
+             * 获取我卖出的闲置物品
+             */
             getMySoldIdle(){
                 this.$api.getMySoldIdle().then(res=>{
                     if (res.status_code === 1){
@@ -316,6 +322,9 @@
                     }
                 })
             },
+            /**
+             * 获取我买到的闲置物品
+             */
             getMyOrder(){
                 this.$api.getMyOrder().then(res=>{
                     if (res.status_code === 1){
@@ -335,18 +344,26 @@
                     }
                 })
             },
+            /**
+             * 获取用户的闲置物品数据
+             * 区分已发布和已下架的物品
+             */
             getIdleItemData() {
                 this.$api.getAllIdleItem().then(res => {
                     console.log(res);
                     if (res.status_code === 1) {
                         for (let i = 0; i < res.data.length; i++) {
+                            // 格式化时间
                             res.data[i].timeStr = res.data[i].releaseTime.substring(0, 10) + " " + res.data[i].releaseTime.substring(11, 19);
+                            // 获取第一张图片作为展示图
                             let pictureList = JSON.parse(res.data[i].pictureList);
                             res.data[i].imgUrl = pictureList.length > 0 ? pictureList[0] : '';
+                            
+                            // 根据物品状态分类
                             if (res.data[i].idleStatus === 1) {
-                                this.dataList[0].push(res.data[i]);
+                                this.dataList[0].push(res.data[i]);  // 已发布
                             } else if (res.data[i].idleStatus === 2) {
-                                this.dataList[1].push(res.data[i]);
+                                this.dataList[1].push(res.data[i]);  // 已下架
                             }
                         }
                     }
@@ -369,16 +386,22 @@
                 // console.log(tab, event);
                 console.log(this.activeName);
             },
+            /**
+             * 保存用户昵称
+             */
             saveUserNickname() {
                 this.notUserNicknameEdit = true;
                 this.$api.updateUserPublicInfo({
                     nickname: this.userInfo.nickname
                 }).then(res => {
                     console.log(res);
+                    // 更新全局用户信息
                     this.$globalData.userInfo.nickname = this.userInfo.nickname;
                 })
-
             },
+            /**
+             * 保存用户密码
+             */
             savePassword() {
                 if (!this.userPassword1 || !this.userPassword2) {
                     this.$message.error('密码为空！');
@@ -393,6 +416,7 @@
                                 message: '修改成功！',
                                 type: 'success'
                             });
+                            // 清空密码输入框
                             this.userPassword1 = '';
                             this.userPassword2 = '';
                             this.userPassword3 = '';
@@ -403,7 +427,6 @@
                 } else {
                     this.$message.error('两次输入的密码不一致！');
                 }
-
             },
             finishEdit() {
                 this.notUserNicknameEdit = true;
@@ -461,10 +484,17 @@
                 row.defaultFlag = true;
                 this.update(row);
             },
+            /**
+             * 跳转到详情页
+             * @param {string} activeName 当前标签页
+             * @param {Object} item 物品或订单对象
+             */
             toDetails(activeName, item) {
                 if (activeName === '4'||activeName === '5') {
+                    // 跳转到订单详情
                     this.$router.push({path: '/order', query: {id: item.id}});
                 } else {
+                    // 跳转到物品详情
                     this.$router.push({path: '/details', query: {id: item.id}});
                 }
             },
